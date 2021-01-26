@@ -1,0 +1,59 @@
+version: '3'
+
+services:
+  jenkins:
+    image: jenkins/jenkins:jdk11
+    privileged: true
+    user: root
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    networks:
+      - jenkins
+    volumes:
+      - jenkinsvol:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${HOME}/.m2:/root/.m2
+
+  nexus:
+    image: sonatype/nexus
+    privileged: true
+    user: root
+    networks:
+      - jenkins
+    ports:
+      - "8082:8081"
+    expose:
+      - "8082"
+
+  sonarqube:
+    image: sonarqube
+    ports:
+      - "9000:9000"
+      - "9092:9092"
+    networks:
+      - jenkins
+
+  tomcat:
+    image: bitnami/tomcat:7
+    privileged: true
+    user: root
+    networks:
+      - jenkins
+    environment:
+      - TOMCAT_USERNAME=tomcat2
+      - TOMCAT_PASSWORD=tomcat2
+    ports:
+      - "8083:8083"
+    expose:
+      - "8083"
+    volumes:
+      - ./conf/server.xml:/opt/bitnami/tomcat/conf/server.xml
+      - ./conf/tomcat-users.xml:/opt/bitnami/tomcat/conf/tomcat-users.xml
+      - ./conf/web.xml:/opt/bitnami/tomcat/conf/web.xml
+
+networks:
+  jenkins:
+
+volumes:
+  jenkinsvol: {}
