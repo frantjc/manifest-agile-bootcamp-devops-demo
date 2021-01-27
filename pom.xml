@@ -11,11 +11,22 @@
 	<groupId>com.manifestcorp</groupId>
 	<artifactId>demo</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
 	<name>demo</name>
 	<description>Demo project for Manifest Agile Bootcamp DevOps lecture</description>
 	<properties>
 		<java.version>11</java.version>
 	</properties>
+	<distributionManagement>
+		<repository>
+			<id>local-nexus</id>
+			<url>http://nexus:8081/nexus/content/repositories/releases</url>
+		</repository>
+	   <snapshotRepository>
+	      <id>local-nexus</id>
+	      <url>http://nexus:8081/nexus/content/repositories/snapshots</url>
+	   </snapshotRepository>
+	</distributionManagement>
 
 	<dependencies>
 		<dependency>

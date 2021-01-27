@@ -48,9 +48,7 @@ services:
     expose:
       - "8083"
     volumes:
-      - ./conf/server.xml:/opt/bitnami/tomcat/conf/server.xml
-      - ./conf/tomcat-users.xml:/opt/bitnami/tomcat/conf/tomcat-users.xml
-      - ./conf/web.xml:/opt/bitnami/tomcat/conf/web.xml
+      - ./tomcat/conf:/opt/bitnami/tomcat/conf
 
 networks:
   jenkins:

@@ -1,9 +1,5 @@
 pipeline {
-    agent ANY
-
-    tools {
-        maven 'Maven 3.6.3'
-    }
+    agent any
 
     stages {
         stage('build') {
@@ -19,16 +15,46 @@ pipeline {
             }
         }
 
-        stage('sonar') {
+        stage("SonarQube Analysis"){
             steps {
-                sh 'mvn clean sonar:sonar'
+                sh 'mvn sonar:sonar -Dsonar.host.url=http://sonarqube:9000'
             }
         }
 
-        stage('nexus') {
+        stage("Tomcat Deploy"){
+          steps{
+            sh 'mvn clean tomcat7:redeploy'
+
+           }
+         }
+
+        stage("Nexus Archive"){
             steps {
                 sh 'mvn deploy'
             }
         }
-    }              
+
+    }
+}
+
+post {
+     always {
+        echo 'Job completed.'
+     }
+     success {
+        echo 'SUCCESS!'
+     }
+
+     failure {
+       mail bcc: '', body: "<b>Job Failed</b><br>Project: ${env.JOB_NAME} <br>Build Number: ${env.BUILD_NUMBER} <br> Build URL: ${env.BUILD_URL} <br><hr><br>", cc: '', charset: 'UTF-8', from: '', mimeType: 'text/html', replyTo: '', subject: "JOB FAILURE: ${env.JOB_NAME} - #${env.BUILD_NUMBER}", to: "rcarter1@aep.com";
+
+     }
+     unstable {
+       mail bcc: '', body: "<b>Job became UNSTABLE</b><br>Project: ${env.JOB_NAME} <br>Build Number: ${env.BUILD_NUMBER} <br> Build URL: ${env.BUILD_URL} <br><hr><br>", cc: '', charset: 'UTF-8', from: '', mimeType: 'text/html', replyTo: '', subject: "JOB became UNSTABLE: ${env.JOB_NAME} - #${env.BUILD_NUMBER}", to: "rcarter1@aep.com";
+
+     }
+     fixed {
+       mail bcc: '', body: "<b>Job is back to normal</b><br>Project: ${env.JOB_NAME} <br>Build Number: ${env.BUILD_NUMBER} <br> Build URL: ${env.BUILD_URL} <br><hr><br> ", cc: '', charset: 'UTF-8', from: '', mimeType: 'text/html', replyTo: '', subject: "JOB is back to normal: ${env.JOB_NAME} - #${env.BUILD_NUMBER}", to: "rcarter1@aep.com";
+
+     }
 }
