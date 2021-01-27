@@ -40,15 +40,13 @@ services:
     user: root
     networks:
       - jenkins
-    environment:
-      - TOMCAT_USERNAME=tomcat2
-      - TOMCAT_PASSWORD=tomcat2
     ports:
       - "8083:8083"
     expose:
       - "8083"
     volumes:
-      - ./tomcat/conf:/opt/bitnami/tomcat/conf
+      - ./tomcat/conf/server.xml:/opt/bitnami/tomcat/conf/server.xml
+      - ./tomcat/conf/tomcat-users.xml:/opt/bitnami/tomcat/conf/tomcat-users.xml
 
 networks:
   jenkins:

@@ -103,6 +103,19 @@
                     <skipNexusStagingDeployMojo>true</skipNexusStagingDeployMojo>
                 </configuration>
             </plugin>
+						<plugin>
+					    <groupId>org.apache.tomcat.maven</groupId>
+					    <artifactId>tomcat7-maven-plugin</artifactId>
+					    <version>2.2</version>
+					    <configuration>
+					        <url>http://localhost:8083/manager/text</url>
+					        <server>TomcatServer</server>
+					        <update>true</update>
+					        <path>/demo</path>
+					        <username>tomcat2</username>
+					        <password>tomcat2</password>
+					    </configuration>
+						</plugin>
 		</plugins>
 	</build>
 </project>
