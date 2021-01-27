@@ -27,12 +27,26 @@ services:
       - "8082"
 
   sonarqube:
-    image: sonarqube
+    image: sonarqube:lts
     ports:
       - "9000:9000"
       - "9092:9092"
     networks:
       - jenkins
+    environment:
+      SONARQUBE_JDBC_USERNAME: sonar
+      SONARQUBE_JDBC_PASSWORD: sonarpasswd
+      SONARQUBE_JDBC_URL: "jdbc:postgresql://postgres:5432/sonar"
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:9.6
+    networks:
+      - jenkins
+    environment:
+      POSTGRES_USER: sonar
+      POSTGRES_PASSWORD: sonarpasswd
 
   tomcat:
     image: bitnami/tomcat:7
