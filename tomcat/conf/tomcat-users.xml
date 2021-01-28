@@ -6,4 +6,4 @@
     <role rolename="manager-script"/>
     <user username="tomcat2" password="tomcat2" roles="manager-script"/>
     <user username="user" password="" roles="manager-gui,admin-gui"/>
-<user username="user" password="" roles="manager-gui,admin-gui"/><user username="user" password="" roles="manager-gui,admin-gui"/><user username="user" password="" roles="manager-gui,admin-gui"/><user username="user" password="" roles="manager-gui,admin-gui"/></tomcat-users>
+</tomcat-users>
