@@ -23,6 +23,7 @@ pipeline {
 
     stage('Nexus Archive') {
       steps {
+        sh "./mvnw versions:set -DnewVersion=0.0.${env.BUILD_NUMBER}-RELEASE"
         sh './mvnw deploy -s .mvn/wrapper/settings.xml'
       }
     }
