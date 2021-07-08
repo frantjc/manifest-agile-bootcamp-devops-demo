@@ -1,62 +1,51 @@
 pipeline {
-    agent any
+  agent any
 
-    stages {
-        stage('Build') {
-            steps {
-                sh './mvnw clean package'
-            }
-        }
-
-        stage('Test') {
-            steps {
-                sh './mvnw test'
-                junit allowEmptyResults: true, testResults: '**/surefire-reports/*.xml'
-            }
-        }
-
-        // stage('SonarQube Analysis'){
-        //     steps {
-        //         sh './mvnw sonar:sonar -Dsonar.host.url=http://sonarqube:9000'
-        //     }
-        // }
-
-        stage('Tomcat Deploy'){
-          steps{
-            sh './mvnw clean tomcat7:redeploy'
-           }
-         }
-
-        stage('Nexus Archive'){
-            steps {
-                sh './mvnw clean deploy'
-            }
-        }
+  stages {
+    stage('Build') {
+      steps {
+      	sh './mvnw -U install'
+      }
     }
 
-    post {
-         always {
-            echo 'Job completed.'
-         }
-
-         success {
-            echo 'SUCCESS!'
-         }
-
-         failure {
-            echo 'FAILURE'
-           //mail bcc: '', body: '<b>Job Failed</b><br>Project: ${env.JOB_NAME} <br>Build Number: ${env.BUILD_NUMBER} <br> Build URL: ${env.BUILD_URL} <br><hr><br>', cc: '', charset: 'UTF-8', from: '', mimeType: 'text/html', replyTo: '', subject: 'JOB FAILURE: ${env.JOB_NAME} - #${env.BUILD_NUMBER}', to: 'rcarter1@aep.com';
-         }
-
-         unstable {
-            echo 'UNSTABLE'
-           //mail bcc: '', body: '<b>Job became UNSTABLE</b><br>Project: ${env.JOB_NAME} <br>Build Number: ${env.BUILD_NUMBER} <br> Build URL: ${env.BUILD_URL} <br><hr><br>', cc: '', charset: 'UTF-8', from: '', mimeType: 'text/html', replyTo: '', subject: 'JOB became UNSTABLE: ${env.JOB_NAME} - #${env.BUILD_NUMBER}', to: 'rcarter1@aep.com';
-         }
-
-         fixed {
-          echo 'FIXED'
-          // mail bcc: '', body: '<b>Job is back to normal</b><br>Project: ${env.JOB_NAME} <br>Build Number: ${env.BUILD_NUMBER} <br> Build URL: ${env.BUILD_URL} <br><hr><br> ', cc: '', charset: 'UTF-8', from: '', mimeType: 'text/html', replyTo: '', subject: 'JOB is back to normal: ${env.JOB_NAME} - #${env.BUILD_NUMBER}', to: 'rcarter1@aep.com';
-         }
+    stage('Test') {
+      steps {
+        sh './mvnw test'
+      }
     }
 
+    stage('Code Analysis'){
+      steps {
+        sh './mvnw jacoco:report'
+        sh './mvnw jacoco:check'
+      }	
+    }
+
+
+    stage('Nexus Archive') {
+      steps {
+        sh './mvnw deploy'
+      }
+    }
+  }
+
+  post {
+    always {
+      junit  testresults: 'path/to/report/xml'
+    }
+
+    success {
+      echo 'SUCCESS'
+    }
+
+    failure {
+      mail
+        body: '<b>Job Failed</b>'
+        from: '',
+        mimeType: 'text/html',
+        replyTo: '',
+        subject: "JOB FAILURE: ${env.JOB_NAME} - #${env.BUILD_NUMBER}", 
+        to: 'logsdonalex11@gmail.com';   
+    }
+  }
 }

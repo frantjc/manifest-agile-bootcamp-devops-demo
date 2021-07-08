@@ -2,68 +2,17 @@ version: '3'
 
 services:
   jenkins:
-    image: jenkins/jenkins:jdk11
+    image: jenkins/jenkins # :jdk11
     privileged: true
-    user: root
-    ports:
-      - "8080:8080"
-      - "50000:50000"
-    networks:
-      - jenkins
-    volumes:
-      - jenkinsvol:/var/jenkins_home
-      - /var/run/docker.sock:/var/run/docker.sock
-      - ${HOME}/.m2:/root/.m2
+    ports: ['8080:8080', '50000:50000']
+    networks: [ci]
+    volumes: [./:/repositories/this-repository/:ro, /var/run/docker.sock:/var/run/docker.sock]
 
   nexus:
     image: sonatype/nexus
     privileged: true
-    user: root
-    networks:
-      - jenkins
-    ports:
-      - "8081:8081"
-    expose:
-      - "8081"
-
-  sonarqube:
-    image: sonarqube:lts
-    ports:
-      - "9000:9000"
-      - "9092:9092"
-    networks:
-      - jenkins
-    environment:
-      SONARQUBE_JDBC_USERNAME: sonar
-      SONARQUBE_JDBC_PASSWORD: sonarpasswd
-      SONARQUBE_JDBC_URL: "jdbc:postgresql://postgres:5432/sonar"
-    depends_on:
-      - postgres
-
-  postgres:
-    image: postgres:9.6
-    networks:
-      - jenkins
-    environment:
-      POSTGRES_USER: sonar
-      POSTGRES_PASSWORD: sonarpasswd
-
-  tomcat:
-    image: bitnami/tomcat:7
-    privileged: true
-    user: root
-    networks:
-      - jenkins
-    ports:
-      - "8083:8083"
-    expose:
-      - "8083"
-    volumes:
-      - ./tomcat/conf/server.xml:/opt/bitnami/tomcat/conf/server.xml
-      - ./tomcat/conf/tomcat-users.xml:/opt/bitnami/tomcat/conf/tomcat-users.xml
+    networks: [ci]
+    ports: ['8081:8081']
 
 networks:
-  jenkins:
-
-volumes:
-  jenkinsvol: {}
+  ci:

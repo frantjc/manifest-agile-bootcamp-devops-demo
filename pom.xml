@@ -15,7 +15,7 @@
 	<name>demo</name>
 	<description>Demo project for Manifest Agile Bootcamp DevOps lecture</description>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>8</java.version>
 	</properties>
 	<distributionManagement>
 		<repository>
@@ -24,7 +24,7 @@
 		</repository>
 	   <snapshotRepository>
 	      <id>local-nexus</id>
-	      <url>http://localhost:8081/nexus/content/repositories/snapshots</url>
+	      <url>http://nexus:8081/nexus/content/repositories/snapshots</url>
 	   </snapshotRepository>
 	</distributionManagement>
 
@@ -66,11 +66,6 @@
 				</configuration>
 			</plugin>
             <plugin>
-                <groupId>org.sonarsource.scanner.maven</groupId>
-                <artifactId>sonar-maven-plugin</artifactId>
-                <version>3.6.0.1398</version>
-            </plugin>
-            <plugin>
                 <artifactId>maven-deploy-plugin</artifactId>
                 <version>2.8.1</version>
                 <executions>
@@ -103,19 +98,6 @@
                     <skipNexusStagingDeployMojo>true</skipNexusStagingDeployMojo>
                 </configuration>
             </plugin>
-			<plugin>
-			<groupId>org.apache.tomcat.maven</groupId>
-				<artifactId>tomcat7-maven-plugin</artifactId>
-				<version>2.2</version>
-				<configuration>
-					<url>http://tomcat:8083/manager/text</url>
-					<server>TomcatServer</server>
-					<update>true</update>
-					<path>/demo</path>
-					<username>tomcat2</username>
-					<password>tomcat2</password>
-				</configuration>
-			</plugin>
 		</plugins>
 	</build>
 </project>
