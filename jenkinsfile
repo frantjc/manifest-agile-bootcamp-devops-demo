@@ -21,7 +21,6 @@ pipeline {
       }	
     }
 
-
     stage('Nexus Archive') {
       steps {
         sh './mvnw deploy'
@@ -31,6 +30,7 @@ pipeline {
 
   post {
     always {
+      echo 'DONE'
       junit testResults: 'path/to/report/xml'
     }
 
@@ -39,6 +39,7 @@ pipeline {
     }
 
     failure {
+      echo 'FAILURE'
       mail body: '<b>Job Failed</b>',
         from: '',
         mimeType: 'text/html',

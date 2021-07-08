@@ -122,12 +122,6 @@ under the License.
       <username>admin</username>
       <password>admin123</password>
     </server>
-    <server>
-      <id>TomcatServer</id>
-      <username>tomcat2</username>
-      <password>tomcat2</password>
-    </server>
-
 
     <!-- Another sample, using keys to authenticate.
     <server>
