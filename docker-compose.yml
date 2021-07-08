@@ -6,7 +6,7 @@ services:
     privileged: true
     ports: ['8080:8080', '50000:50000']
     networks: [ci]
-    volumes: [./:/repositories/this-repository/:ro, /var/run/docker.sock:/var/run/docker.sock]
+    volumes: [./:/repositories/this-repository/:ro, ./maven/settings.xml:/var/jenkins_home/.m2/settings.xml, /var/run/docker.sock:/var/run/docker.sock]
 
   nexus:
     image: sonatype/nexus
