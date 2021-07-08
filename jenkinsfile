@@ -23,7 +23,7 @@ pipeline {
 
     stage('Nexus Archive') {
       steps {
-        sh './mvnw deploy'
+        sh './mvnw deploy -s .mvn/wrapper/settings.xml'
       }
     }
   }
