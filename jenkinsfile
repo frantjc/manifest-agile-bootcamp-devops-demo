@@ -2,22 +2,22 @@ pipeline {
   agent any
 
   stages {
-    stage('Build') {
-      steps {
-      	sh './mvnw -U install'
-      }
-    }
-
     stage('Test') {
       steps {
         sh './mvnw test'
       }
     }
 
+    stage('Build') {
+      steps {
+      	sh './mvnw -U install'
+      }
+    }
+
     stage('Code Analysis'){
       steps {
         sh './mvnw jacoco:report'
-        sh './mvnw jacoco:check'
+        // sh './mvnw jacoco:check'
       }	
     }
 
@@ -40,12 +40,12 @@ pipeline {
 
     failure {
       echo 'FAILURE'
-      mail body: '<b>Job Failed</b>',
-        from: '',
-        mimeType: 'text/html',
-        replyTo: '',
-        subject: "JOB FAILURE: ${env.JOB_NAME} - #${env.BUILD_NUMBER}", 
-        to: 'logsdonalex11@gmail.com';   
+      // mail body: '<b>Job Failed</b>',
+      //   from: '',
+      //   mimeType: 'text/html',
+      //   replyTo: '',
+      //   subject: "JOB FAILURE: ${env.JOB_NAME} - #${env.BUILD_NUMBER}", 
+      //   to: '';   
     }
   }
 }
