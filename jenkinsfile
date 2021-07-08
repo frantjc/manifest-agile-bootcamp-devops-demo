@@ -40,7 +40,7 @@ pipeline {
 
     failure {
       mail
-        body: '<b>Job Failed</b>'
+        body: '<b>Job Failed</b>',
         from: '',
         mimeType: 'text/html',
         replyTo: '',
