@@ -116,12 +116,12 @@ under the License.
      | NOTE: You should either specify username/password OR privateKey/passphrase, since these pairings are
      |       used together.
      |
-    <server>
-      <id>deploymentRepo</id>
-      <username>repouser</username>
-      <password>repopwd</password>
-    </server>
     -->
+    <server>
+      <id>local-nexus</id>
+      <username>admin</username>
+      <password>admin123</password>
+    </server>
 
     <!-- Another sample, using keys to authenticate.
     <server>
@@ -130,13 +130,6 @@ under the License.
       <passphrase>optional; leave empty if not used.</passphrase>
     </server>
     -->
-
-    <!-- Default credentials for sonatype/nexus image for use with github.com/frantjc/manifest-agile-bootcamp-devops-demo/{docker-compose.yml,jenkinsfile}. -->
-    <server>
-      <id>local-nexus</id>
-      <username>admin</username>
-      <password>admin123</password>
-    </server>
   </servers>
 
   <!-- mirrors
