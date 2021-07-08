@@ -31,7 +31,7 @@ pipeline {
 
   post {
     always {
-      junit  testresults: 'path/to/report/xml'
+      junit testResults: 'path/to/report/xml'
     }
 
     success {
